@@ -19,7 +19,6 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
 	void OpenDoor();
 
 public:	
@@ -33,6 +32,5 @@ private:
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume *PressurePlate;
 
-	UPROPERTY(EditAnywhere)
-		AActor *ActorThatTriggers;
+	AActor *ActorThatTriggers;
 };	
