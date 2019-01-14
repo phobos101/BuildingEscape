@@ -19,18 +19,27 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	void OpenDoor();
+	void SetDoorAngle(float);
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 		float OpenAngle = 90.0f;
+
+	UPROPERTY(EditAnywhere)
+		float CloseAngle = 0.0f;
+
+	UPROPERTY(EditAnywhere)
+		float DoorCloseDelay = 1.0f;
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume *PressurePlate;
 
-	AActor *ActorThatTriggers;
+	AActor *Owner; // The door object itself
+	AActor *ActorThatTriggers; // Actors that can trigger door trigger volumes
+
+	float LastDoorOpenTime;
 };	
