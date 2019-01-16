@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+//#include "Components/InputComponent.h"
 
 #define OUT
 
@@ -23,7 +24,24 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("[Grabber] ready"))	
+	UE_LOG(LogTemp, Log, TEXT("[Grabber] Ready"))
+
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+
+	if (PhysicsHandle && InputComponent)
+	{
+		InputComponent->BindAction("Pickup", IE_Pressed, this, &UGrabber::Pickup);
+	}
+
+	if (!PhysicsHandle) {
+		UE_LOG(LogTemp, Error, TEXT("[Grabber] Unable to find 'PhysicsHandleComponent' on %s"), *GetOwner()->GetName())
+	}
+	
+	if (!InputComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[Grabber] Unable to find 'InputComponent' on %s"), *GetOwner()->GetName())
+	}
 }
 
 
@@ -70,10 +88,15 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 
 	// See what we hit
-	AActor *ActorHit = LineTraceHit.GetActor();
+	AActor* ActorHit = LineTraceHit.GetActor();
 	if (ActorHit)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[Grabber] Ray cast hit: %s"), *(ActorHit->GetName()))
+		UE_LOG(LogTemp, Log, TEXT("[Grabber] Ray cast hit: %s"), *(ActorHit->GetName()))
 	}
+}
+
+void UGrabber::Pickup()
+{
+	UE_LOG(LogTemp, Log, TEXT("[Grabber] PICKUP"))
 }
 
